@@ -1,0 +1,39 @@
+---
+title: "Household Income in North Dakota"
+---
+
+```{r}
+#| label: setup
+#| echo: false
+#| message: false
+library(tidyverse)
+library(tidycensus)
+```
+
+```{r}
+#| message: false
+#| echo: false
+#| output: false
+nd_income <- get_acs(
+  geography = "tract",
+  variables = "B19013_001", # Median household income in the past 12 months (in 2019 inflation-adjusted dollars)
+  state = "ND",
+  geometry = TRUE,
+  year = 2019
+)
+```
+
+
+```{r}
+#| label: census data
+#| echo: false
+#| message: false
+
+ggplot(nd_income, aes(fill = estimate, geometry = geometry)) +
+  geom_sf() +
+  scale_fill_viridis_c(name = "Median Household Income") +
+  labs(title = "Median Household Income in North Dakota by Census Tract",
+       caption = "Source: US Census Bureau ACS 2019") +
+  theme_minimal()
+```
+
